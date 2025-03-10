@@ -1,8 +1,4 @@
-import mysql.connector 
-
-db = mysql.connector.connect(
-    host="localhost",
-    user="disha",
-    password="abcd12@",
-    database="budgettracker"
-)
+CREATE TABLE users (
+    username VARCHAR(255) PRIMARY KEY,
+    password_hash VARCHAR(255) NOT NULL
+);

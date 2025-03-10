@@ -1,19 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import RegisterForm from './Components/register';
 import LoginForm from './Components/login';
-import HomePage from './Components/home';
+import BudgetTrackerHome from './Components/home';
+import Dashboard from './Components/Dashboard';
 
-function App(){
+const App = () => {
+    const username = "testuser"; // Replace with the actual username after login
+
     return (
         <Router>
-            <div className="App">
-                <Routes>
-                    <Route exact path="/" element={<LoginForm />} />
-                    <Route path="/home" element={<HomePage />} />
-                </Routes>
-            </div>
+            <Routes>
+                <Route path="/" element={<Navigate to="/register" />} />
+                <Route path="/register" element={<RegisterForm />} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/home" element={<BudgetTrackerHome username={username} />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
         </Router>
     );
-}
+};
 
 export default App;
