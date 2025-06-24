@@ -16,21 +16,28 @@ const BudgetTrackerHome = ({ username }) => {
 
     useEffect(() => {
         const fetchBudgetData = async () => {
-            const response = await fetch(`http://127.0.0.1:5000/get_budget/${username}`);
-            const data = await response.json();
-            if (data.length > 0) {
-                const budget = data[0];
-                setIncomeSources(JSON.parse(budget.income_sources));
-                setExpenses(JSON.parse(budget.expenses));
-                setSavingGoal(budget.saving_goal);
-                setMonthlyBudget(budget.monthly_budget);
-                setSelectedMonth(budget.selected_month);
-                setSelectedYear(budget.selected_year);
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/get_budget/${username}/${selectedMonth}/${selectedYear}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                if (data.length > 0) {
+                    const budget = data[0];
+                    setIncomeSources(JSON.parse(budget.income_sources));
+                    setExpenses(JSON.parse(budget.expenses));
+                    setSavingGoal(budget.saving_goal);
+                    setMonthlyBudget(budget.monthly_budget);
+                    setSelectedMonth(budget.selected_month);
+                    setSelectedYear(budget.selected_year);
+                }
+            } catch (error) {
+                console.error('Error fetching budget data:', error);
             }
         };
 
         fetchBudgetData();
-    }, [username]);
+    }, [username, selectedMonth, selectedYear]);
 
     const addIncomeSource = () => {
         setIncomeSources([...incomeSources, { id: incomeSources.length + 1, source: "", amount: "" }]);
